@@ -1,0 +1,1 @@
+export const SERVER_URL= 'https://5etwal.com/wp-json';
