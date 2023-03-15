@@ -1,0 +1,18 @@
+.custom-loaderp{
+    align-content: center;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--artical-background-panel) !important;
+ }
+
+
+ .img-fluid-logoop {
+    width: 100px;
+    height: 100px;
+ }

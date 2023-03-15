@@ -24,6 +24,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import {SERVER_URL} from '../../config';
+import Loader from '../../assets/images/loader.gif';
+import './PostTable.css'
 const tableIcons = {
   Delete: forwardRef((props, ref) => <DeleteIcon {...props} ref={ref} />),
   DetailPanel: forwardRef((props, ref) => (
@@ -50,7 +52,7 @@ const PostTable = () => {
   const navigate = useNavigate();
 
   const [CurrToken, setToken] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const tableRef = useRef(null);
   const defaultMaterialTheme = createTheme();
   const columns = [
@@ -67,17 +69,13 @@ const PostTable = () => {
       title: "User Nicename",
       field: "userNicename",
     },
-    // { title: "Posts", field: "Posts" },
     {
       title: "Feature Image",
       field: "featured_image",
         render: (rowData) =>  <img src={rowData.featured_image.medium} height={100} width={100}/>
           
     },
-    // {
-    //   title: "Action",
-    //   field: "action",
-    // },
+   
   ];
 
   const [entries, setEnteries] = useState();
@@ -99,53 +97,18 @@ const PostTable = () => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        // axios
-        //   .delete(
-        //     `${SERVER_URL}/wp/v2/posts/${data.ID}`,
-        //     {
-        //       headers: header,
-        //     }
-        //   )
-        //   .then((res) => {
-        //     setIsLoading(true);
-        //     if (res.data.success === 1) {
-        //       Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        //       // router(0);
-        //     } else {
-        //       Swal.fire({
-        //         position: "top-end",
-        //         icon: "error",
-        //         title: res.data.message,
-        //         showConfirmButton: false,
-        //         timer: 1500,
-        //       });
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err, "An Error Occured");
-        //   });
+       
         fetch(`${SERVER_URL}/wp/v2/posts/${data.id}`, {
-          // Adding method type
           method: "DELETE",
-          // Adding body or contents to send
-          // body: {
-          //   username: loginCreditional.email,
-          //   password: loginCreditional.password
-          // },
-          // Adding headers to the request
           headers: {
-            // "Content-type": "application/json; charset=UTF-8",
-            "Authorization": `Bearer ${CurrToken}`,
+             "Authorization": `Bearer ${CurrToken}`,
           }
         })
-          // Converting to JSON
           .then(response => response.json())
-          // Displaying results to console
           .then(res => {
             setIsLoading(true);
             if (res.status !== undefined) {
-             Swal.fire("Deleted!", "Post has been deleted.", "success");
-              
+             Swal.fire("Deleted!", "Post has been deleted.", "success");  
             }
             else {
               Swal.fire({
@@ -157,7 +120,7 @@ const PostTable = () => {
               });
             }
           }
-          );
+        );
       }
     });
     
@@ -184,43 +147,12 @@ const PostTable = () => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        // const body = {
-        //   user_status: data.d.post_status === "auto-draft" ? 0 : 1,
-        // };
-        // axios
-        //   .put(
-        //     `https://5setwalbackend-production.up.railway.app/api/admin/post/${data.d.ID}`,
-          
-        //     {
-        //       headers: header,
-        //     }
-        //   )
-        //   .then((res) => {
-        //     if (res.data.success === 1) {
-        //       console.log(res.data,"resp data");
-        //       Swal.fire("Updated!", "User status has been Updated.", "success");
-        //       setIsLoading(false);
-        //     } else {
-        //       Swal.fire({
-        //         position: "top-end",
-        //         icon: "error",
-        //         title: res.data.message,
-        //         showConfirmButton: false,
-        //         timer: 1500,
-        //       });
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err, "An Error Occured");
-        //   });
+       
         fetch(`${SERVER_URL}/wp/v2/posts/${data.d.id}`, {
-          // Adding method type
           method: "POST",
-          // Adding body or contents to send
-          body: JSON.stringify({
+           body: JSON.stringify({
             status: 'publish',
           }),
-          // Adding headers to the request
           headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": `Bearer ${CurrToken}`,
@@ -255,11 +187,13 @@ const PostTable = () => {
   useEffect(() => {  
      let token = JSON.parse(localStorage.getItem('Token'));
      setToken(token)
+    //  setIsLoading(true)
     axios
       .get(SERVER_URL+ '/w1/v1/posts')
       .then((resp) => {
           setEnteries(resp.data);
-           console.log("resp.data.data",resp.data)
+      setIsLoading(false)
+
       }).catch((err)=>{
         console.log(err);
       })
@@ -303,6 +237,7 @@ const PostTable = () => {
                           Viewhandler(data),
                       },
                     ]}
+                    isLoading={isLoading}
                     options={{
                       // pageSize: 10,
                       // pageSizeOptions: [5, 10, 15, 20],
@@ -320,7 +255,15 @@ const PostTable = () => {
                       Pagination: (props) => (
                         <TablePagination {...props}  />
                       ),
-
+                      OverlayLoading: (props) => (
+                        <div className="custom-loaderp">
+                            <img
+                              className="img-fluid-logoop"
+                              src={Loader}
+                              alt="loading"
+                            />
+                         </div>
+                      ),
                       Container: (props) => <Paper {...props} elevation={0} />,
                     }}
                   />

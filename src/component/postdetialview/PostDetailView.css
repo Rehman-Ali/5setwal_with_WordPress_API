@@ -53,8 +53,8 @@
 }
 
 .PostDetailView .table img {
-  width: 100px;
-  border-radius: 50%;
+  width: 160px;
+  /* border-radius: 50%; */
 }
 .PostDetailView table th,
 .PostDetailView table td {
@@ -77,4 +77,20 @@
   font-size: 1.1rem;
   font-weight: 400;
   margin: 0;
+}
+.custom-loader{
+   height: 800px;
+   vertical-align: middle;
+   text-align: center;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   
+}
+
+
+.img-fluid-logoo {
+  width: 100px;
+  height: 100px;
+ 
 }

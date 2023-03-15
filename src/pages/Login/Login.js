@@ -104,7 +104,7 @@ const Login = () => {
                         type="text"
                         className="form-control input"
                         onChange={handelChange}
-                        placeholder="Email"
+                        placeholder="Username"
                         value={loginCreditional.email}
                         name="email"
                       />
