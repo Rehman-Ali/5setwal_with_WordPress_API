@@ -2,28 +2,39 @@ import React, { useEffect, useState } from "react";
 import { Chart } from "primereact/chart";
 import "./LineChart.css";
 import axios from "axios";
+import {SERVER_URL} from '../../config';
 const LineChartDemo = ( {montlyPost, totalPosts}) => {
+ const [posts, setPost] = useState([]);
+ 
+  useEffect(() => {  
+   axios
+     .get(SERVER_URL+ '/w1/v1/posts')
+     .then((resp) => {
+      setPost(resp.data);
+     }).catch((err)=>{
+       console.log(err);
+     })
+ }, []);
 
-  console.log('montlyPost', totalPosts)
+  console.log('montlyPost========', posts)
   const [basicData] = useState({
     labels: ["JAN", "FEB", "MAR", "APR", "MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
     datasets: [
-      {
-        label: "Posts",
-        data: montlyPost,
-        fill: false,
-        borderColor: "#42A5F5",
-        // tension: 0.4,
-      },
       // {
-      //   label: "Second Dataset",
-      //   data: [28, 48, 40, 19, 86, 27, 90],
+      //   label: "Posts",
+      //   data: montlyPost,
       //   fill: false,
-      //   borderColor: "#FFA726",
-      //   tension: 0.4,
+      //   borderColor: "#42A5F5",
+      //    tension: 0.4,
       // },
-    ],
-  });
+      {
+        label: "Second Dataset",
+        data: [28, 48, 40, 19, 86, 27, 90],
+        fill: false,
+        borderColor: "#FFA726",
+        tension: 0.1,
+      }
+]});
 
   const getLightTheme = () => {
     let basicOptions = {

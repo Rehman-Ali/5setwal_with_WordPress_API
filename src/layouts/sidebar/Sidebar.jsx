@@ -52,7 +52,7 @@ const Sidebar = () => {
                   <p>posts</p>
                 </NavLink>
               </li>
-              <li className="nav--sidebar--item">
+              {/* <li className="nav--sidebar--item">
                 <NavLink className="link" to="/reports">
                   <i className="fa-solid fa-list"></i>
                   <p>reports</p>
@@ -96,7 +96,7 @@ const Sidebar = () => {
                   <i className="fa-solid fa-lock"></i>
                   <p>change password</p>
                 </NavLink>
-              </li>
+              </li> */}
 
               <li className="nav--sidebar--item">
                 <Link className="link" onClick={handelLogout}>

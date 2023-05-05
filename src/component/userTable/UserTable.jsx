@@ -21,6 +21,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { ThemeProvider, createTheme } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {SERVER_URL} from '../../config';
+import Loader from '../../assets/images/loader.gif';
 
 const tableIcons = {
   Delete: forwardRef((props, ref) => <DeleteIcon {...props} ref={ref} />),
@@ -69,12 +71,12 @@ const UserTable = () => {
     // { title: "Posts", field: "Posts" },
     {
       title: "Status",
-      field: "user_status",
+      field: "is_approved",
       render: (rowData) =>
-        rowData.user_status === 1 ? (
-          <button className="btn btn-info">Active</button>
+        rowData.is_approved === true ? (
+          <button className="btn btn-info">Approved</button>
         ) : (
-          <button className="btn btn-danger">Inactive</button>
+          <button className="btn btn-danger">Pending</button>
         ),
     },
     // {
@@ -97,6 +99,25 @@ const UserTable = () => {
   const Viewhandler= () =>{
    console.log("view handler")
   }
+
+
+
+  useEffect(() => {  
+    let token = JSON.parse(localStorage.getItem('Token'));
+    setToken(token)
+   //  setIsLoading(true)
+   axios
+     .get(SERVER_URL+ '/w1/v1/users')
+     .then((resp) => {
+         setEnteries(resp.data);
+     setIsLoading(false)
+
+     }).catch((err)=>{
+       console.log(err);
+     })
+
+
+ }, [isLoading]);
   return (
     <>
       <div className="col-lg-12">
@@ -108,31 +129,31 @@ const UserTable = () => {
                   <MaterialTable
                     tableRef={tableRef}
                     icons={tableIcons}
-                    title="Latest User "
+                    title="Latest User"
                     columns={columns}
                     data={entries}
-                    actions={[
-                      {
-                        icon: () => <DeleteIcon />,
-                        tooltip: "Remove",
-                        onClick: (event, data) => DeleteHandler(data),
-                      },
-                      {
-                        icon: () => <Edit />,
-                        tooltip: "Change Status",
-                        onClick: (event, data) =>
-                          Updatehandler({
-                            e: event,
-                            d: data,
-                          }),
-                      },
+                    // actions={[
+                    //   {
+                    //     icon: () => <DeleteIcon />,
+                    //     tooltip: "Remove",
+                    //     onClick: (event, data) => DeleteHandler(data),
+                    //   },
+                    //   {
+                    //     icon: () => <Edit />,
+                    //     tooltip: "Change Status",
+                    //     onClick: (event, data) =>
+                    //       Updatehandler({
+                    //         e: event,
+                    //         d: data,
+                    //       }),
+                    //   },
 
-                      {
-                        icon: () => <VisibilityOutlinedIcon />,
-                        tooltip: "View",
-                        onClick: (event, data) => Viewhandler(data),
-                      },
-                    ]}
+                    //   {
+                    //     icon: () => <VisibilityOutlinedIcon />,
+                    //     tooltip: "View",
+                    //     onClick: (event, data) => Viewhandler(data),
+                    //   },
+                    // ]}
                     options={{
                       pageSize: 10,
                       pageSizeOptions: [5, 10, 15, 20],
@@ -149,6 +170,15 @@ const UserTable = () => {
                     components={{
                       Pagination: (props) => (
                         <TablePagination {...props} rowsPerPage={10} />
+                      ),
+                      OverlayLoading: (props) => (
+                        <div className="custom-loaderp">
+                            <img
+                              className="img-fluid-logoop"
+                              src={Loader}
+                              alt="loading"
+                            />
+                         </div>
                       ),
 
                       Container: (props) => <Paper {...props} elevation={0} />,

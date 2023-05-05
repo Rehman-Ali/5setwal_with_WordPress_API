@@ -197,8 +197,6 @@ const PostTable = () => {
       }).catch((err)=>{
         console.log(err);
       })
-
-
   }, [isLoading]);
   return (
     <>
