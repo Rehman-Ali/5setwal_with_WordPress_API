@@ -35,7 +35,6 @@ const BarChart = ( {montlyUser, totalUsers}) => {
         console.log(err);
       })
   }, [user.length > 0]);
-  console.log(user, "user========")
   const [basicData , setBasicDate] = useState({
     labels: ["JAN", "FEB", "MAR", "APR", "MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
     datasets: [
@@ -92,31 +91,13 @@ const BarChart = ( {montlyUser, totalUsers}) => {
           <div className="total_posts">
             <div className="total_ d-flex justify-content-between">
               <h6>{userTotal}</h6>
-              {/* <p>
-                <span>
-                  <i className="fa-solid fa-arrow-up"></i>
-                </span>
-                33.1%
-              </p> */}
             </div>
             <div className="post_lastmonth">
               <p>Users</p>
-              {/* <p>Since Last Month</p> */}
             </div>
           </div>
           <Chart type="bar" data={basicData} options={basicOptions} />
-
-          {/* <div className="monthss">
-            <div className="this_month">
-              <span></span>
-              <p>This Month</p>
-            </div>
-            <div className="last_month">
-              <span></span>
-              <p>Last Month</p>
-            </div>
-          </div> */}
-        </div>
+       </div>
       </div>
     </>
   );

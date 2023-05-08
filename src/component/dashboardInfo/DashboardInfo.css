@@ -56,7 +56,9 @@
     color: #fff !important;
 }
 
-
+.font-s{
+    font-size: 12px;
+}
 
 @media only  screen and (max-width:768px) {
   .aw_small_box  .icon{

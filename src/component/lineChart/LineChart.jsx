@@ -136,34 +136,16 @@ const LineChartDemo = ( {montlyPost, totalPosts}) => {
       <div className="card">
         <div className="monthy_line_chart">
           <h5>Monthly Posts</h5>
-          {/* <a href="#"> View Report</a> */}
         </div>
         <div className="total_posts">
           <div className="total_ d-flex justify-content-between">
             <h6>{postTotal}</h6>
-            {/* <p>
-              <span>
-                <i className="fa-solid fa-arrow-up"></i>
-              </span>
-              12.5%
-            </p> */}
           </div>
           <div className="post_lastmonth">
             <p>Posts</p>
-            {/* <p>Since Last Month</p> */}
           </div>
         </div>
         <Chart type="line" data={basicData} options={basicOptions} />
-        <div className="monthss">
-          {/* <div className="this_month">
-            <span></span>
-            <p>This Month</p>
-          </div> */}
-          {/* <div className="last_month">
-            <span></span>
-            <p>Last Month</p>
-          </div> */}
-        </div>
       </div>
     </div>
   );

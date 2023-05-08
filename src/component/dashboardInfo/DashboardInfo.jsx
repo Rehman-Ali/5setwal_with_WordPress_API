@@ -76,7 +76,7 @@ const DashboardInfo = ( {dashboardReport}) => {
         <div className="aw_small_box bg-success">
           <div className="inner">
             <h3 className="aw_heading">{user.length > 1 ? user.filter(item => item.is_approved === false).length : 0}</h3>
-            <p className="aw_users">Pending Users</p>
+            <p className="aw_users">Pending Users  <span className="font-s">(Email Verification Required)</span></p>
           </div>
           <div className="icon">
             <i className="fa-solid fa-user"></i>
