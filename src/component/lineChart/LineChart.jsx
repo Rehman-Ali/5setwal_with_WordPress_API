@@ -4,37 +4,47 @@ import "./LineChart.css";
 import axios from "axios";
 import {SERVER_URL} from '../../config';
 const LineChartDemo = ( {montlyPost, totalPosts}) => {
- const [posts, setPost] = useState([]);
+  const [post, setPost] = useState([]);
+  const [postTotal, setPostTotal] = useState(0);
  
   useEffect(() => {  
    axios
      .get(SERVER_URL+ '/w1/v1/posts')
      .then((resp) => {
       setPost(resp.data);
+      setPostTotal(resp.data.length)
+      let postPerMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+      for(var i = 0; i < resp.data.length; i++){
+        postPerMonth[new Date(resp.data[i].Post_Created_date).getMonth()] = postPerMonth[new Date(resp.data[i].Post_Created_date).getMonth()] + 1
+      }
+      setPost(postPerMonth); 
+      setBasicDate(
+        {
+          labels: ["JAN", "FEB", "MAR", "APR", "MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+          datasets: [
+            {
+              label: "My Second dataset",
+              backgroundColor: "#FFA726",
+              data: post,
+            },
+          ],
+        }
+      )
      }).catch((err)=>{
        console.log(err);
      })
- }, []);
+ }, [post.length > 0]);
 
-  console.log('montlyPost========', posts)
-  const [basicData] = useState({
+  const [basicData , setBasicDate] = useState({
     labels: ["JAN", "FEB", "MAR", "APR", "MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
     datasets: [
-      // {
-      //   label: "Posts",
-      //   data: montlyPost,
-      //   fill: false,
-      //   borderColor: "#42A5F5",
-      //    tension: 0.4,
-      // },
       {
-        label: "Second Dataset",
-        data: [28, 48, 40, 19, 86, 27, 90],
-        fill: false,
-        borderColor: "#FFA726",
-        tension: 0.1,
-      }
-]});
+        label: "My Second dataset",
+        backgroundColor: "#FFA726",
+        data: post,
+      },
+    ],
+  });
 
   const getLightTheme = () => {
     let basicOptions = {
@@ -126,29 +136,29 @@ const LineChartDemo = ( {montlyPost, totalPosts}) => {
       <div className="card">
         <div className="monthy_line_chart">
           <h5>Monthly Posts</h5>
-          <a href="#"> View Report</a>
+          {/* <a href="#"> View Report</a> */}
         </div>
         <div className="total_posts">
           <div className="total_ d-flex justify-content-between">
-            <h6>{totalPosts}</h6>
-            <p>
+            <h6>{postTotal}</h6>
+            {/* <p>
               <span>
                 <i className="fa-solid fa-arrow-up"></i>
               </span>
               12.5%
-            </p>
+            </p> */}
           </div>
           <div className="post_lastmonth">
             <p>Posts</p>
-            <p>Since Last Month</p>
+            {/* <p>Since Last Month</p> */}
           </div>
         </div>
         <Chart type="line" data={basicData} options={basicOptions} />
         <div className="monthss">
-          <div className="this_month">
+          {/* <div className="this_month">
             <span></span>
             <p>This Month</p>
-          </div>
+          </div> */}
           {/* <div className="last_month">
             <span></span>
             <p>Last Month</p>
