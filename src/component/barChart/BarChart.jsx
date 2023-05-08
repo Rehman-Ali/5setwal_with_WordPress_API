@@ -1,25 +1,49 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Chart } from "primereact/chart";
 import "./BarChart.css";
+import axios from "axios";
+import {SERVER_URL} from '../../config';
 const BarChart = ( {montlyUser, totalUsers}) => {
+  const [user, setUser] = useState([]);
+  const [userTotal, setUserTotal] = useState(0);
+  useEffect(() => {  
+    axios
+      .get(SERVER_URL+ '/w1/v1/users')
+      .then((resp) => {
+        setUser(resp.data);
+        setUserTotal(resp.data.length)
+        let userPerMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+        for(var i = 0; i < resp.data.length; i++){
+          userPerMonth[new Date(resp.data[i].user_registered).getMonth()] = userPerMonth[new Date(resp.data[i].user_registered).getMonth()] + 1;
+      
+        }
+        setUser(userPerMonth);     
 
-  console.log(montlyUser, 'bar chat montly')
-  const [basicData] = useState({
+        setBasicDate(
+          {
+            labels: ["JAN", "FEB", "MAR", "APR", "MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+            datasets: [
+              {
+                label: "My Second dataset",
+                backgroundColor: "#FFA726",
+                data: user,
+              },
+            ],
+          }
+        )
+      }).catch((err)=>{
+        console.log(err);
+      })
+  }, [user.length > 0]);
+  console.log(user, "user========")
+  const [basicData , setBasicDate] = useState({
     labels: ["JAN", "FEB", "MAR", "APR", "MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-
     datasets: [
       {
-        label: "My First dataset",
-        backgroundColor: "#42A5F5",
-        data:montlyUser,
-        fill: true,
-
+        label: "My Second dataset",
+        backgroundColor: "#FFA726",
+        data: user,
       },
-      // {
-      //   label: "My Second dataset",
-      //   backgroundColor: "#FFA726",
-      //   data: [28, 48, 40, 19, 86, 27, 90],
-      // },
     ],
   });
 
@@ -67,22 +91,22 @@ const BarChart = ( {montlyUser, totalUsers}) => {
           </div>
           <div className="total_posts">
             <div className="total_ d-flex justify-content-between">
-              <h6>{totalUsers}</h6>
-              <p>
+              <h6>{userTotal}</h6>
+              {/* <p>
                 <span>
                   <i className="fa-solid fa-arrow-up"></i>
                 </span>
                 33.1%
-              </p>
+              </p> */}
             </div>
             <div className="post_lastmonth">
               <p>Users</p>
-              <p>Since Last Month</p>
+              {/* <p>Since Last Month</p> */}
             </div>
           </div>
           <Chart type="bar" data={basicData} options={basicOptions} />
 
-          <div className="monthss">
+          {/* <div className="monthss">
             <div className="this_month">
               <span></span>
               <p>This Month</p>
@@ -91,7 +115,7 @@ const BarChart = ( {montlyUser, totalUsers}) => {
               <span></span>
               <p>Last Month</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
